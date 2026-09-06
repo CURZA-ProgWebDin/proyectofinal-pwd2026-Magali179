@@ -7,14 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+#node_modules
 node_modules
+
+#archivos del sistema
 .DS_Store
+
+#carpeta de produccion
 dist
 dist-ssr
 coverage
 *.local
 
-# Editor directories and files
+# Configurcion sel editor
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -24,8 +29,10 @@ coverage
 *.sln
 *.sw?
 
+#informacio de conpilacion
 *.tsbuildinfo
 
+#Cche de  ESlin
 .eslintcache
 
 # Cypress

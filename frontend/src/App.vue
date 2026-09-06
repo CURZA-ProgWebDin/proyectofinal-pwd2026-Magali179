@@ -1,9 +1,7 @@
 <template>
-  <RouterView />
+  <div>
+    <h1>Librería Suipacha</h1>
+
+    <RouterView />
+  </div>
 </template>
-
-<script setup>
-</script>
-
-<style scoped>
-</style>
