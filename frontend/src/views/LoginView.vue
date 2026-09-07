@@ -17,7 +17,7 @@
                     <input type="password" v-model="password">
                 </div>
 
-            <button type="submit">Ingresar</button>
+            <button class="btn-login"type="submit">Ingresar</button>
             
             </form>
         </div>
@@ -51,5 +51,12 @@ const password = ref('')
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+}
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 </style>
