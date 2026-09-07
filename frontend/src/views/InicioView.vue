@@ -19,7 +19,7 @@
     margin-bottom: 10px; /*separamos el título del texto que viene debajo.*/
 }
 
-.inicio-page p { /*eliminamos el margen que el navegador coloca automáticamente en el párrafo.*/s
+.inicio-page p { /*eliminamos el margen que el navegador coloca automáticamente en el párrafo.*/
     margin: 0;
 }
 </style>
