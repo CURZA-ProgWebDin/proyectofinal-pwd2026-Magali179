@@ -6,18 +6,18 @@
             <h1 class="titulo-login">Libreria Suipacha</h1>
             <h2 class="subtitulo-login">Iniciar Sesion</h2>
 
-            <form>
+            <form @submit.prevent="iniciarSesion">
                 <div class="formulario">
                     <label class="label-login">Usuario</label>
-                    <input type="text"v-model="usuario">
+                    <input type="text" v-model="usuario">
                 </div>
                 <div class="formulario">
 
-                    <label class="lbel-login">Contraseña</label>
+                    <label class="label-login">Contraseña</label>
                     <input type="password" v-model="password">
                 </div>
 
-            <button class="btn-login"type="submit">Ingresar</button>
+            <button class="btn-login" type="submit" >Iniciar</button>
             
             </form>
         </div>
@@ -28,11 +28,38 @@
 
 <script setup>
 import { ref } from 'vue'
+import api from '@/services/api'
+import { useAuthStore } from '@/stores/auth' //trae la función que nos permite
+//  acceder al store de autenticación.
+import { useRouter } from 'vue-router' //es una función que nos proporciona Vue Route
+//Nos permite obtener acceso al Router desde nuestro componente LoginView.vue.
 
 const usuario = ref('')
 const password = ref('')
-</script>
+const authStore = useAuthStore()
+const router = useRouter() //Obtenemos el objeto router, que nos permite utilizar las funciones del Router.
 
+const iniciarSesion = async () => {
+
+    alert('La funcion iniciar sesion se ejecuto')
+
+    console.log(usuario.value)
+    console.log(password.value)
+
+    const datos = {
+        nombre: usuario.value,
+        password: password.value
+    }
+
+    const respuesta = await api.post('/login', datos)
+
+    console.log(respuesta.data)
+    authStore.login(respuesta.data) //ejecutá tu función login y pasale los 
+                                    // datos que me devolvió Flask
+     router.push('/inicio') //push le dice al Router:"Quiero navegar a esta ruta."
+                            //Y entre paréntesis indicamos cuál:'/inicio'
+}
+</script>
 <style scoped>
 
     .login-page {
