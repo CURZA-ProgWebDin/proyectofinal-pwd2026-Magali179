@@ -28,7 +28,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import api from '@/services/api'
+import AuthService from '@/services/AuthService'
 import { useAuthStore } from '@/stores/auth' //trae la función que nos permite
 //  acceder al store de autenticación.
 import { useRouter } from 'vue-router' //es una función que nos proporciona Vue Route
@@ -41,7 +41,7 @@ const router = useRouter() //Obtenemos el objeto router, que nos permite utiliza
 
 const iniciarSesion = async () => {
 
-    alert('La funcion iniciar sesion se ejecuto')
+    
 
     console.log(usuario.value)
     console.log(password.value)
@@ -51,13 +51,13 @@ const iniciarSesion = async () => {
         password: password.value
     }
 
-    const respuesta = await api.post('/login', datos)
+    const respuesta = await AuthService.login(datos)
+    
+    authStore.login(respuesta.data)
 
-    console.log(respuesta.data)
-    authStore.login(respuesta.data) //ejecutá tu función login y pasale los 
-                                    // datos que me devolvió Flask
-     router.push('/inicio') //push le dice al Router:"Quiero navegar a esta ruta."
-                            //Y entre paréntesis indicamos cuál:'/inicio'
+    router.push('/inicio')
+
+
 }
 </script>
 <style scoped>

@@ -50,6 +50,9 @@ router.beforeEach((to) => { //Antes de cada navegación, revisá si se cumplen l
       //Si la ruta requiere autenticación Y el usuario no está autenticado...entonces redirige al login
         return '/login'
     }
+    if (to.name === 'login' && authStore.is_authenticated) {
+        return '/inicio'
+    }
 
 })
 
