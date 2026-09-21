@@ -9,7 +9,7 @@ const router = createRouter({
         // Cuando entramos a "/", vamos al formulario de login.
     {
             path: '/',
-            redirect: '/login' //Si alguien entra a /, redirigilo a /login.
+            redirect: '/inicio' 
   },
 
     { path: '/login',

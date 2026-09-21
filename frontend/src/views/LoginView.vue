@@ -3,7 +3,7 @@
 
         <div class="login-container">
 
-            <h1 class="titulo-login">Libreria Suipacha</h1>
+          
             <h2 class="subtitulo-login">Iniciar Sesion</h2>
 
             <form @submit.prevent="iniciarSesion">
@@ -67,6 +67,15 @@ const iniciarSesion = async () => {
     display: flex;
     justify-content: center;
     align-items: center;
+     background-image:
+        linear-gradient(rgba(255, 248, 238, 0.65), rgba(255, 248, 238, 0.65)),
+        url('@/assets/images/fondo-libreria.png');
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-attachment: fixed;
 }
    .login-container {
     width: 380px; /*  Define el ancho de nuestra tarjeta. */

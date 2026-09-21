@@ -7,14 +7,24 @@
 
             <nav class="menu-superior">
 
-                <RouterLink to="/libros" class="opcion-menu">
-                  <img src="@/assets/icons/libro.svg" alt="Libros">
-                  <span>Libros</span>
+                <div v-if="!authStore.is_authenticated" class="opcion-menu">
+                    <img src="@/assets/icons/libro.svg" alt="Libros">
+                    <span>Libros</span>
+                </div>
+
+                <RouterLink v-else to="/libros" class="opcion-menu">
+                    <img src="@/assets/icons/libro.svg" alt="Libros">
+                    <span>Libros</span>
                 </RouterLink>
 
-                <RouterLink to="/usuarios" class="opcion-menu">
-                  <img src="@/assets/icons/usuario.svg" alt="Usuarios">
-                  <span>Usuarios</span>
+                <div v-if="!authStore.is_authenticated" class="opcion-menu">
+                    <img src="@/assets/icons/usuario.svg" alt="Usuarios">
+                    <span>Usuarios</span>
+                </div>
+
+                <RouterLink v-else to="/usuarios" class="opcion-menu">
+                    <img src="@/assets/icons/usuario.svg" alt="Usuarios">
+                    <span>Usuarios</span>
                 </RouterLink>
 
                 <div class="opcion-menu">
@@ -35,6 +45,13 @@
 
     </div>
 </template>
+
+<script setup>
+import { useAuthStore } from '@/stores/auth'//traemos store de autenticacion
+
+const authStore = useAuthStore() //instancia del store para poder consultar, decidir si libro esta bloqueado o habilitado
+</script>
+
 <style scoped>
 
 .barra-superior {
