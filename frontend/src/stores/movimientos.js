@@ -6,12 +6,12 @@ export const useMovimientosStore = defineStore('movimientos', () => {
 
     const movimientos = ref([])
 
-    const getMovimientos = async () => {
+    const getMovimientos = async () => { //Obtener todos los movimientos
         const respuesta = await MovimientoService.getAll()
         movimientos.value = respuesta.data
     }
 
-    const getMisMovimientos = async () => {
+    const getMisMovimientos = async () => {//Obtener movimientos del usuario q corresponda
         const respuesta = await MovimientoService.getMis()
         return respuesta.data
     }
