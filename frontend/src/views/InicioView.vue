@@ -68,19 +68,6 @@ const irALogin = () => {//Funcion nllamada irALogin
     padding-top: 120px; /* deja 120px de espacio arriba */
 }
 
-/*limita el ancho a 900 píxeles, centra el contenedor horizontalmente,
- centra el texto y deja un espacio superior de 120 píxeles*/
-.inicio-contenido h1 {
-    color: #392714;
-    font-family: sans-serif;
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-
-.inicio-contenido p {
-    color: #5a4030;
-    margin-bottom: 30px;
-}
 .btn-login-inicio {
     display: block;
     margin: 25px auto;
@@ -94,34 +81,4 @@ const irALogin = () => {//Funcion nllamada irALogin
     cursor: pointer;
 }
 
-.opciones {
-    display: grid;
-    grid-template-columns: repeat(2, 250px);
-    gap: 18px;
-    justify-content: center;
-}
-
-.opcion {
-    background-color: rgba(255, 250, 243, 0.92);
-    border: 2px solid #896449;
-    border-radius: 15px;
-    padding: 15px;
-    height: 105px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.opcion img {
-    width: 80px;
-    height: 80px;
-}
-
-.opcion span {
-    color: #392714;
-    font-size: 20px;
-    font-weight: bold;
-}
 </style>
