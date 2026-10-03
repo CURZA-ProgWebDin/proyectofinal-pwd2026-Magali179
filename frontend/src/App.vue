@@ -32,10 +32,15 @@
                     <span>Ventas</span>
                 </div>
 
-                <div class="opcion-menu">
+                <div v-if="!authStore.is_authenticated" class="opcion-menu">
                     <img src="@/assets/icons/movimientos.svg" alt="Movimientos">
                     <span>Movimientos</span>
                 </div>
+
+                <RouterLink v-else to="/movimientos" class="opcion-menu">
+                    <img src="@/assets/icons/movimientos.svg" alt="Movimientos">
+                    <span>Movimientos</span>
+                </RouterLink>
 
             </nav>
 

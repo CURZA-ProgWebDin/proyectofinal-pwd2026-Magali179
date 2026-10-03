@@ -1,4 +1,5 @@
 <template> <!--part visual del componente vue-->
+
     <div class="movimientos-page"> <!--Contenor principal de toda la pantlla de movimientos-->
 
         <div class="movimientos-contenido"> <!--Organiza movimiento interno-->
@@ -8,8 +9,9 @@
                 <h1>Movimientos</h1>
 
                 <div class="botones-movimientos">
-
+                    <!--#solo admin ve todos los movimientos-->
                     <button
+                        v-if="authStore.rol_user === 'admin'" 
                         class="btn-movimientos"
                         @click="mostrarTodos"
                     >

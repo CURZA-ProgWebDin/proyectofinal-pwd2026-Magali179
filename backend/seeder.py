@@ -42,6 +42,23 @@ with app.app_context():
 
         db.session.add(admin)
         db.session.commit()
+        
+        ##### USUARIO OPERADOR DE PRUEBA #####
+
+    operador = User.query.filter_by(nombre='operador').first()
+
+    if not operador:
+        operador = User(
+            nombre='operador',
+            email='operador@test.com',
+            password='operador123',
+            rol_id=rol_operador.id
+    )
+
+    operador.generate_password('operador123')
+
+    db.session.add(operador)
+    db.session.commit()
 
     
     ###### CATEGORIAS LITERARIAS ######
