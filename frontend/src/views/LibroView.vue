@@ -235,11 +235,11 @@
                             <td>{{ producto.stock_actual }}</td>
 
                             <td>
-                                {{ producto.categoria_id }}
+                                {{ obtenerNombreCategoria(producto.categoria_id) }}
                             </td>
 
                             <td>
-                                {{ producto.proveedor_id || 'Sin proveedor' }}
+                                {{ obtenerNombreProveedor(producto.proveedor_id) }}
                             </td>
 
                             <td>
@@ -284,6 +284,22 @@ const productosStore = useProductosStore()//Lo estamos ejecutando y guardando el
 //  en: productosStore--obtengo una instancia del Store par usarla en esta View
 const categoriasStore = useCategoriasStore()
 const proveedoresStore = useProveedoresStore()
+
+const obtenerNombreCategoria = (categoriaId) => {
+    const categoria = categoriasStore.categorias.find(
+        categoria => categoria.id === categoriaId
+    )
+
+    return categoria ? categoria.nombre : ''
+}
+
+const obtenerNombreProveedor = (proveedorId) => {
+    const proveedor = proveedoresStore.proveedores.find(
+        proveedor => proveedor.id === proveedorId
+    )
+
+    return proveedor ? proveedor.nombre : ''
+}
 
 //Los 3 son datos reqactivos porque usamos ref
 const mostrarFormulario = ref(false)//Controla si form se muestra o no, comienza en false por eso no lo vemosm en pantalla
@@ -347,6 +363,53 @@ const guardarProducto = async () => {  // función asíncrona que guarda o modif
     errores.value = [] // ref q guarda los errores, limpia errores antriores
     mensaje.value = ''// ref q guarda valores,accedemos a su valor dentro del <sript setup>,
     //  '' array vacio
+
+     // Validamos los campos obligatorios antes de enviar los datos al backend
+
+    if (!formulario.value.nombre) {
+        errores.value.push('El nombre es requerido')
+    }
+
+    if (!formulario.value.autor) {
+        errores.value.push('El autor es requerido')
+    }
+
+    if (
+        formulario.value.precio_costo === '' ||
+        formulario.value.precio_costo === null
+    ) {
+        errores.value.push('El precio de costo es requerido')
+    }
+
+    if (
+        formulario.value.precio_venta === '' ||
+        formulario.value.precio_venta === null
+    ) {
+        errores.value.push('El precio de venta es requerido')
+    }
+
+    if (
+        formulario.value.stock_actual === '' ||
+        formulario.value.stock_actual === null
+    ) {
+        errores.value.push('El stock actual es requerido')
+    }
+
+    if (
+        formulario.value.stock_minimo === '' ||
+        formulario.value.stock_minimo === null
+    ) {
+        errores.value.push('El stock mínimo es requerido')
+    }
+
+    if (!formulario.value.categoria_id) {
+        errores.value.push('La categoría es requerida')
+    }
+
+    // Si encontramos errores, no continuamos con el guardado
+    if (errores.value.length > 0) {
+        return
+    }
 
     const datos = {// cre un objeto de los datos q se van a enviar al backend, estamos preparando
         // los datos del formulario antes de mandrlos
@@ -464,3 +527,22 @@ onMounted(async () => { // ejecuta el codigo cuando el componente ya fue montado
 // automáticamente los productos, categorías y proveedores cuando entramos a la pantalla
 //  de libros."
 </script>
+
+<style scoped>
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+th,
+td {
+    padding: 8px 10px;
+    border: 3px solid #8b5e3c;
+}
+.mensaje-error {
+    color: red;
+}
+
+</style>
