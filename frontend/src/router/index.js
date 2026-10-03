@@ -11,12 +11,13 @@ const router = createRouter({
             path: '/',
             redirect: '/inicio' 
   },
-
-    { path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue'),
-  },
   {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/LoginView.vue'),
+    },
+
+    {
         path: '/inicio',
         name: 'inicio',
         component: () => import('../views/InicioView.vue'),
@@ -24,11 +25,7 @@ const router = createRouter({
             requiresAuth: true
         },
     },
-  {
-      path: '/inicio',/*  Es la dirección que vamos a escribir en el navegador */
-      name: 'inicio', /*Es el nombre que Vue Router le da a esta ruta.*/
-      component: () => import('../views/InicioView.vue'), /*Cuando alguien entre a /inicio, cargá InicioView.vue.*/
-  },
+  
   {
     path: '/libros', /*Es la dirección que usamos en el navegador.*/
     name: 'libros', /*Es el nombre que le damos a esta ruta dentro de Vue Router.*/
@@ -38,6 +35,14 @@ const router = createRouter({
     path: '/usuarios', /*Es la dirección que vamos a usar en el navegador:*/
     name: 'usuarios', /*Es el nombre interno de esta ruta dentro de Vue Router.*/
     component: () => import('../views/UsuariosView.vue'), /*Le indicamos a Vue qué vista tiene que mostrar cuando entramos a /usuarios.*/
+},
+{
+    path: '/movimientos',
+    name: 'movimientos',
+    component: () => import('../views/MovimientosView.vue'),
+    meta: {
+        requiresAuth: true
+    },
 },
 
   ],

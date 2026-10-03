@@ -114,40 +114,43 @@ const errores = ref([])
 
 const mostrandoMisMovimientos = ref(false)
 
-const columnas = computed(() => {
+const columnas = computed(() => {//columnas-varibles/crea una propiedad llamada columnas
 
-    if (movimientos.value.length === 0) {
-        return []
+    if (movimientos.value.length === 0) { //la lista estabvacia?/length=cuantos mov hay
+        return [] // si no hay nada en lsta=o devolvemos return
     }
 
-    return Object.keys(movimientos.value[0])
+    return Object.keys(movimientos.value[0])//pero si hay mov los mostramos
 
 })
 
-const mostrarValor = (valor) => {
+const mostrarValor = (valor) => {//funcion "moswtrarValor"/ preprara un nvalor antes de mostrarlo en cada tabls(mostrarValor)
 
-    if (valor === null || valor === undefined) {
+    if (valor === null || valor === undefined) {// si valor es 0 o nulo retorna texto vacio ''
         return ''
     }
 
-    if (typeof valor === 'object') {
+    if (typeof valor === 'object') {//que tipo de dato, si es objeto retornamos texto. si no es null
+        //undefined ni objeto retornamos valor original
         return JSON.stringify(valor)
     }
 
     return valor
 }
 
-const mostrarTodos = async () => {
+const mostrarTodos = async () => {// funcion mostrarTodos/obj. cargar mov de todos los uduarios
 
-    errores.value = []
-    mostrandoMisMovimientos.value = false
+    errores.value = [] // antes de consultar limpiamos lista de errores, vuelve a estar vacia
+    mostrandoMisMovimientos.value = false// q tipo de mov estamos mostrando, si es false=todos mov
+    //si es true= misMovimientos
+    //como vamosa mostrar todos los mov es "false"
 
     try {
 
-        await movimientosStore.getMovimientos()
+        await movimientosStore.getMovimientos()//pedimos los movimientos y llamammos getMovimientos()
 
-        movimientos.value = movimientosStore.movimientos
-
+        movimientos.value = movimientosStore.movimientos// si obtenemos mov lo mostramos enn tabla
+        // y si falla? entramos al catch/guardamos mensaje dentro de nuestro array de errores
     } catch (error) {
 
         errores.value = [
@@ -158,18 +161,19 @@ const mostrarTodos = async () => {
 
 }
 
-const mostrarMisMovimientos = async () => {
+const mostrarMisMovimientos = async () => {// funcion mis mostrarMisMovimientos
 
-    errores.value = []
-    mostrandoMisMovimientos.value = true
+    errores.value = []//antees de consulta limpiamos los errores anteriores
+    mostrandoMisMovimientos.value = true//true= estamos mostrando nuesttos movimientos
 
-    try {
+    try {//en este bloque intentaremos mostrar movimientos
 
-        const respuesta = await movimientosStore.getMisMovimientos()
+        const respuesta = await movimientosStore.getMisMovimientos()//llamamos al store, pero prrimero
+        //guardamos en "respuesta" lo que devuelcve el store
 
-        movimientos.value = respuesta
+        movimientos.value = respuesta //guardamos movimientos
 
-    } catch (error) {
+    } catch (error) {// si ocurre error, guardamos mensaje "error"
 
         errores.value = [
             'No se pudieron cargar tus movimientos'
@@ -179,11 +183,18 @@ const mostrarMisMovimientos = async () => {
 
 }
 
-onMounted(async () => {
-
-    await mostrarTodos()
+onMounted(async () => {//funcio del ciclo de vida de vue, ya la importamos anes y se ejecuta
+//  cuando el componente fue montado en pantalla
+    if (authStore.rol_user === 'admin') {//si usuario es admin mostrar todos los moviminetos
+    
+        await mostrarTodos()
+    } else { //si no es admin mostrar solo mostrarMisMovimientos
+        await mostrarMisMovimientos()
+    }
 
 })
+    
+
 
 </script>
 
