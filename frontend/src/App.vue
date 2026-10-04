@@ -27,6 +27,11 @@
                     <span>Usuarios</span>
                 </RouterLink>
 
+                <RouterLink to="/categorias" class="opcion-menu">
+                    <img src="@/assets/icons/categoria.svg" alt="Categorías">
+                    <span>Categorías</span>
+                </RouterLink>
+
                 <div class="opcion-menu">
                     <img src="@/assets/icons/ventas.svg" alt="Ventas">
                     <span>Ventas</span>
@@ -40,6 +45,11 @@
                 <RouterLink v-else to="/movimientos" class="opcion-menu">
                     <img src="@/assets/icons/movimientos.svg" alt="Movimientos">
                     <span>Movimientos</span>
+                </RouterLink>
+                
+                <RouterLink to="/proveedores" class="opcion-menu">
+                    <img src="@/assets/icons/proveedor.svg" alt="Proveedores">
+                    <span>Proveedores</span>
                 </RouterLink>
 
             </nav>

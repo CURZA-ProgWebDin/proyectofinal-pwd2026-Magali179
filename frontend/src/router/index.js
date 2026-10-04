@@ -37,6 +37,16 @@ const router = createRouter({
     component: () => import('../views/UsuariosView.vue'), /*Le indicamos a Vue qué vista tiene que mostrar cuando entramos a /usuarios.*/
 },
 {
+    path: '/categorias',
+    name: 'categorias',
+    component: () => import('../views/CategoriasView.vue'),
+},
+{
+    path: '/proveedores',
+    name: 'proveedores',
+    component: () => import('../views/ProveedoresView.vue'),
+},
+{
     path: '/movimientos',
     name: 'movimientos',
     component: () => import('../views/MovimientosView.vue'),
