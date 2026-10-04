@@ -9,6 +9,7 @@
                 <h1>Movimientos</h1>
 
                 <div class="botones-movimientos">
+
                     <!--#solo admin ve todos los movimientos-->
                     <button
                         v-if="authStore.rol_user === 'admin'" 
@@ -33,12 +34,74 @@
                 v-if="errores.length"
                 class="mensaje-error"
             >
+
                 <p
                     v-for="error in errores"
                     :key="error"
                 >
                     {{ error }}
                 </p>
+
+            </div>
+
+            <div
+                v-if="productoSeleccionado"
+                class="formulario-movimiento"
+            >
+
+                <h2>Registrar venta</h2>
+
+                <p>
+                    <strong>Libro:</strong>
+                    {{ productoSeleccionado.nombre }}
+                </p>
+
+                <p>
+                    <strong>Stock disponible:</strong>
+                    {{ productoSeleccionado.stock_actual }}
+                </p>
+
+                <label>
+                    Cantidad:
+
+                    <input
+                        v-model.number="cantidad"
+                        type="number"
+                        min="1"
+                        :max="productoSeleccionado.stock_actual"
+                    >
+                </label>
+
+                <label>
+                    Motivo:
+
+                    <input
+                        v-model="motivo"
+                        type="text"
+                    >
+                </label>
+
+                <button
+                    class="btn-movimientos"
+                    @click="registrarMovimiento"
+                >
+                    Registrar venta
+                </button>
+
+                <p
+                    v-if="errorMovimiento"
+                    class="mensaje-error"
+                >
+                    {{ errorMovimiento }}
+                </p>
+
+                <p
+                    v-if="mensajeMovimiento"
+                    class="mensaje-exito"
+                >
+                    {{ mensajeMovimiento }}
+                </p>
+
             </div>
 
             <div class="lista-movimientos">
@@ -96,6 +159,7 @@
         </div>
 
     </div>
+
 </template>
 
 <script setup>
@@ -105,16 +169,26 @@ import { ref, computed, onMounted } from 'vue'//Tres funciones de vue; ref, comp
 import { useMovimientosStore } from '@/stores/movimientos'//Importamos store de movimientoss
 import { useAuthStore } from '@/stores/auth'
 //Tenemos 2 stores porque necesitamos 2 tipos de info
+import { useRoute } from 'vue-router'//nos permite leer el id q viene en la url
+import { useProductosStore } from '@/stores/productos'//nos permite buscar los datos del libro seleccionado
 
 const movimientosStore = useMovimientosStore()// Utilizar el store de movientos dentro de MovimientosView
 // crea el acceso l store de moviminetos dentro de ese componente
 const authStore = useAuthStore()//Nos dice quien esta logueqado y cual es su rol
+const route = useRoute()//Permite acceder a los datos de la ruta y leer el id del libro
+const productosStore = useProductosStore()//Accedemos al store del producto para obtener los datos del libro
 
 const movimientos = ref([])
 
 const errores = ref([])
 
 const mostrandoMisMovimientos = ref(false)
+
+const productoSeleccionado = ref(null)//Guarda los datros del libro seleccionado
+const cantidad = ref(1)//Guarda cantidad de libros a vender
+const motivo = ref('Venta')//Motivo del movimiento, venta
+const errorMovimiento = ref('')//Guarda mensaje si ocurre error al registrar el movimiento
+const mensajeMovimiento = ref('')//Guarda mensaje de confirmacion de movimiento, venta
 
 const columnas = computed(() => {//columnas-varibles/crea una propiedad llamada columnas
 
@@ -184,14 +258,88 @@ const mostrarMisMovimientos = async () => {// funcion mis mostrarMisMovimientos
     }
 
 }
+const cargarProductoSeleccionado = async () => {
 
-onMounted(async () => {//funcio del ciclo de vida de vue, ya la importamos anes y se ejecuta
-//  cuando el componente fue montado en pantalla
-    if (authStore.rol_user === 'admin') {//si usuario es admin mostrar todos los moviminetos
-    
+    const productoId = route.query.producto_id // Obtiene el ID del libro desde la URL.
+
+    if (!productoId) {
+        return // Si no hay producto seleccionado, no hace nada.
+    }
+
+    try {
+
+        productoSeleccionado.value =
+            await productosStore.getProducto(Number(productoId))
+        // Busca en el backend los datos del libro seleccionado.
+
+    } catch (error) {
+
+        errorMovimiento.value =
+            'No se pudo cargar el libro seleccionado'
+        // Guarda un mensaje si no se pudo obtener el libro.
+
+    }
+
+}
+const registrarMovimiento = async () => {
+    console.log('Se hizo clic en Registrar venta')
+
+    errorMovimiento.value = ''
+    mensajeMovimiento.value = ''
+
+    try {
+
+        const respuesta = await movimientosStore.crearMovimiento({
+            tipo_movimiento: 'salida',
+            cantidad: cantidad.value,
+            motivo: motivo.value,
+            producto_id: productoSeleccionado.value.id
+        })
+
+        mensajeMovimiento.value = respuesta.message
+        if (authStore.rol_user === 'admin') {
         await mostrarTodos()
-    } else { //si no es admin mostrar solo mostrarMisMovimientos
+        } else {
+            await mostrarMisMovimientos()
+        }
+
+    } catch (error) {
+
+        if (error.response?.data?.message) {
+
+            errorMovimiento.value = error.response.data.message
+
+        } else if (error.response?.data?.errores) {
+
+            errorMovimiento.value =
+                error.response.data.errores.join(', ')
+
+        } else {
+
+            errorMovimiento.value =
+                'No se pudo registrar el movimiento'
+
+        }
+
+    }
+
+}
+
+onMounted(async () => {
+
+    await cargarProductoSeleccionado()
+    // Carga el libro seleccionado desde el producto_id de la URL.
+
+    if (authStore.rol_user === 'admin') {
+
+        await mostrarTodos()
+        // Si es admin, muestra todos los movimientos.
+
+    } else {
+
         await mostrarMisMovimientos()
+        // Si es operador, muestra solamente sus movimientos.
+
     }
 
 })

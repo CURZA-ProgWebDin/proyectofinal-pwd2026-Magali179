@@ -244,6 +244,16 @@
 
                             <td>
 
+                                <RouterLink
+                                        :to="{
+                                            path: '/movimientos',
+                                            query: { producto_id: producto.id }
+                                    }"
+                                    class="btn-seleccionar"
+                                >
+                                    Seleccionar
+                                </RouterLink>
+
                                 <button
                                     @click="editarProducto(producto.id)"
                                 >

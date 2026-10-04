@@ -105,7 +105,7 @@ class MovimientoStockController (Controller):
                 if producto:
                     if movimiento.tipo_movimiento == 'entrada':
                         producto.stock_actual -= movimiento.cantidad
-                else:
+                    else:
                         producto.stock_actual += movimiento.cantidad
 
                 db.session.delete(movimiento)

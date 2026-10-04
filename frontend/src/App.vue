@@ -7,47 +7,47 @@
 
             <nav class="menu-superior">
 
-                <div v-if="!authStore.is_authenticated" class="opcion-menu">
-                    <img src="@/assets/icons/libro.svg" alt="Libros">
-                    <span>Libros</span>
-                </div>
-
-                <RouterLink v-else to="/libros" class="opcion-menu">
+                <RouterLink
+                    v-if="authStore.is_authenticated"
+                    to="/libros"
+                    class="opcion-menu"
+>
                     <img src="@/assets/icons/libro.svg" alt="Libros">
                     <span>Libros</span>
                 </RouterLink>
 
-                <div v-if="!authStore.is_authenticated" class="opcion-menu">
-                    <img src="@/assets/icons/usuario.svg" alt="Usuarios">
-                    <span>Usuarios</span>
-                </div>
-
-                <RouterLink v-else to="/usuarios" class="opcion-menu">
+                <RouterLink
+                    v-if="authStore.is_authenticated"
+                    to="/usuarios"
+                    class="opcion-menu"
+>
                     <img src="@/assets/icons/usuario.svg" alt="Usuarios">
                     <span>Usuarios</span>
                 </RouterLink>
 
-                <RouterLink to="/categorias" class="opcion-menu">
+                <RouterLink
+                    v-if="authStore.is_authenticated"
+                    to="/categorias"
+                    class="opcion-menu"
+>
                     <img src="@/assets/icons/categoria.svg" alt="Categorías">
                     <span>Categorías</span>
                 </RouterLink>
 
-                <div class="opcion-menu">
-                    <img src="@/assets/icons/ventas.svg" alt="Ventas">
-                    <span>Ventas</span>
-                </div>
-
-                <div v-if="!authStore.is_authenticated" class="opcion-menu">
-                    <img src="@/assets/icons/movimientos.svg" alt="Movimientos">
-                    <span>Movimientos</span>
-                </div>
-
-                <RouterLink v-else to="/movimientos" class="opcion-menu">
+                <RouterLink
+                    v-if="authStore.is_authenticated"
+                    to="/movimientos"
+                    class="opcion-menu"
+>
                     <img src="@/assets/icons/movimientos.svg" alt="Movimientos">
                     <span>Movimientos</span>
                 </RouterLink>
                 
-                <RouterLink to="/proveedores" class="opcion-menu">
+                <RouterLink
+                    v-if="authStore.is_authenticated"
+                    to="/proveedores"
+                    class="opcion-menu"
+>
                     <img src="@/assets/icons/proveedor.svg" alt="Proveedores">
                     <span>Proveedores</span>
                 </RouterLink>

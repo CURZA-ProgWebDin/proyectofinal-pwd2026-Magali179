@@ -29,22 +29,42 @@ const router = createRouter({
   {
     path: '/libros', /*Es la dirección que usamos en el navegador.*/
     name: 'libros', /*Es el nombre que le damos a esta ruta dentro de Vue Router.*/
-    component: () => import('../views/LibroView.vue'), /*Esta línea establece qué componente se debe mostrar cuando entramos a /libros.*/
+    component: () => import('../views/LibroView.vue'),/*Esta línea establece qué componente se debe mostrar cuando entramos a /libros.*/
+    meta: {
+        requiresAuth: true
+    }, 
 },
 {
     path: '/usuarios', /*Es la dirección que vamos a usar en el navegador:*/
     name: 'usuarios', /*Es el nombre interno de esta ruta dentro de Vue Router.*/
-    component: () => import('../views/UsuariosView.vue'), /*Le indicamos a Vue qué vista tiene que mostrar cuando entramos a /usuarios.*/
+    component: () => import('../views/UsuariosView.vue'),/*Le indicamos a Vue qué vista tiene que mostrar cuando entramos a /usuarios.*/
+    meta: {
+        requiresAuth: true
+    },  
 },
 {
     path: '/categorias',
     name: 'categorias',
     component: () => import('../views/CategoriasView.vue'),
+    meta: {
+        requiresAuth: true
+    },  
 },
 {
     path: '/proveedores',
     name: 'proveedores',
     component: () => import('../views/ProveedoresView.vue'),
+    meta: {
+        requiresAuth: true
+    },  
+},
+{
+    path: '/roles',
+    name: 'roles',
+    component: () => import('../views/RolesView.vue'),
+    meta: {
+        requiresAuth: true
+    },  
 },
 {
     path: '/movimientos',
