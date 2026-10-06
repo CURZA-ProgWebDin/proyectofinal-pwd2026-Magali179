@@ -1,6 +1,7 @@
 """importacion"""
 from app.models.base_model import BaseModel
 from app.models import db
+from datetime import datetime
 
 """clase"""
 class MovimientoStock(BaseModel):
@@ -23,6 +24,8 @@ class MovimientoStock(BaseModel):
         self.motivo = motivo
         self.producto_id = producto_id
         self.user_id = user_id
+        """cuando creo este moviieto asignale fecha y hora actual"""
+        self.updated_at = datetime.now()
 
     def to_dict(self):
         data = super().to_dict()

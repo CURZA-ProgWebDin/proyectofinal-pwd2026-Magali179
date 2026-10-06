@@ -122,14 +122,16 @@
                     <thead>
 
                         <tr>
-
-                            <th
-                                v-for="columna in columnas"
-                                :key="columna"
-                            >
-                                {{ columna }}
+                            <th>N.º de movimiento</th>
+                            <th>Libro</th>
+                            <th>Cantidad</th>
+                            <th>Fecha de registro de la venta</th>
+                            <th>Motivo</th>
+                            <th>Tipo de movimiento</th>
+                            <th>Última modificación</th>
+                            <th v-if="authStore.rol_user === 'admin'">
+                                Usuario
                             </th>
-
                         </tr>
 
                     </thead>
@@ -139,19 +141,41 @@
                         <tr
                             v-for="movimiento in movimientos"
                             :key="movimiento.id"
-                        >
+        >
 
-                            <td
-                                v-for="columna in columnas"
-                                :key="columna"
-                            >
-                                {{ mostrarValor(movimiento[columna]) }}
-                            </td>
+                        <td>{{ movimiento.id }}</td>
+
+                        <td>
+                            {{ obtenerNombreLibro(movimiento.producto_id) }}
+                        </td>
+
+                        <td>
+                            {{ movimiento.cantidad }}
+                        </td>
+                        <!--transforma fecha q biene de backend-->
+                        <td>
+                            {{formatearFecha(movimiento.created_at)}}
+                        </td>
+
+                        <td>
+                            {{ movimiento.motivo }}
+                        </td>
+
+                        <td>
+                            {{ movimiento.tipo_movimiento }}
+                        </td>
+
+                        <td>
+                            {{ formatearFecha(movimiento.updated_at) }}
+                        </td>
+
+                        <td v-if="authStore.rol_user === 'admin'">
+                        {{ obtenerNombreUsuario(movimiento.user_id) }}
+                        </td>
 
                         </tr>
 
                     </tbody>
-
                 </table>
 
             </div>
@@ -171,12 +195,15 @@ import { useAuthStore } from '@/stores/auth'
 //Tenemos 2 stores porque necesitamos 2 tipos de info
 import { useRoute } from 'vue-router'//nos permite leer el id q viene en la url
 import { useProductosStore } from '@/stores/productos'//nos permite buscar los datos del libro seleccionado
+import { useUsuariosStore } from '@/stores/usuarios'//con el id busca en el store el nombre del usuario
 
 const movimientosStore = useMovimientosStore()// Utilizar el store de movientos dentro de MovimientosView
 // crea el acceso l store de moviminetos dentro de ese componente
 const authStore = useAuthStore()//Nos dice quien esta logueqado y cual es su rol
 const route = useRoute()//Permite acceder a los datos de la ruta y leer el id del libro
 const productosStore = useProductosStore()//Accedemos al store del producto para obtener los datos del libro
+const usuariosStore = useUsuariosStore()//nos permite acceder al store de usuarios
+
 
 const movimientos = ref([])
 
@@ -212,6 +239,31 @@ const mostrarValor = (valor) => {//funcion "moswtrarValor"/ preprara un nvalor a
     }
 
     return valor
+}
+const obtenerNombreLibro = (productoId) => {//la funcion ecibe id, busca en productoStore y devuelve el nombre
+  const producto = productosStore.productos.find(
+    producto => producto.id === productoId
+  )
+
+  return producto ? producto.nombre : 'Libro no encontrado'
+}
+const obtenerNombreUsuario = (userId) => {//del id se va al store y obtiene nombre
+  const usuario = usuariosStore.usuarios.find(//find recorre la lista hasta encontrar el objeto
+    usuario => usuario.id === userId
+  )
+
+  return usuario ? usuario.nombre : 'Usuario no encontrado'
+}
+const formatearFecha = (fecha) => {
+    if (!fecha) return ''
+
+    return new Date(fecha).toLocaleString('es-AR', {//transformamaos fecha que llaga del backen a formato argentino
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
 }
 
 const mostrarTodos = async () => {// funcion mostrarTodos/obj. cargar mov de todos los uduarios
@@ -326,24 +378,20 @@ const registrarMovimiento = async () => {
 }
 
 onMounted(async () => {
+  await productosStore.getProductos()//carga libros q existan
 
-    await cargarProductoSeleccionado()
-    // Carga el libro seleccionado desde el producto_id de la URL.
+  if (authStore.rol_user === 'admin') {//consulta todos los moviminetos
+    await usuariosStore.getUsuarios()
+  }
 
-    if (authStore.rol_user === 'admin') {
+  await cargarProductoSeleccionado()
 
-        await mostrarTodos()
-        // Si es admin, muestra todos los movimientos.
-
-    } else {
-
-        await mostrarMisMovimientos()
-        // Si es operador, muestra solamente sus movimientos.
-
-    }
-
+  if (authStore.rol_user === 'admin') {
+    await mostrarTodos()
+  } else {
+    await mostrarMisMovimientos()
+  }
 })
-    
 
 
 </script>
