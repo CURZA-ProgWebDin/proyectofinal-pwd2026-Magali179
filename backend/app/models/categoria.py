@@ -15,7 +15,7 @@ class Categoria(BaseModel):
     def __init__(self, nombre, descripcion) -> None:
         self.nombre = nombre
         self.descripcion = descripcion
-        
+    '''convierte el objeto del modelo en diccionario python'''   
     def to_dict(self):
         data = super().to_dict()
         """herencia BaseModel"""

@@ -15,16 +15,19 @@ from app.routes.rol_routes import rol_bp
 from app.routes.auth_routes import auth_bp
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-
+'''carga variables de entorno desde .env para que puedan ser utilizadas en la aplicacion'''
 load_dotenv(override = True)
 import os
 migrate = Migrate()
 jwt = JWTManager()
-
+'''creamos aplicacion Flask, configuramos CORS, registramos blueprints de rutas, 
+inicializamos db, migraciones y JWT'''
 def create_app():
     app = Flask(__name__)
     CORS(app)
+    ''''obtene Flask, si no equiste usamos development'''
     env = os.getenv('FLASK_ENV', 'development')
+    '''usa la configuracion correspondiente al entorno'''
     app.config.from_object(config[env])
     app.register_blueprint(user_bp)
     app.register_blueprint(rol_bp)
